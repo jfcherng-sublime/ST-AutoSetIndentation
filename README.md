@@ -1,10 +1,10 @@
 Sublime-AutoSetIndentation
 ==========================
 
-This plugin sets the indentation for you, by default, when a file is loaded.
+This plugin automatically detects and sets the indentation for you, by default, when a file is loaded.
 
 
-Why Do I Need This?
+Why Do I Make This?
 ===================
 
 Sublime Text detects the indentation when a file is loaded 
@@ -17,7 +17,7 @@ You could give following cases a try!
 - https://github.com/SublimeTextIssues/Core/issues/1459
 - https://github.com/SublimeTextIssues/Core/issues/1640
 
-I find that [Indent_Finder](http://www.freehackers.org/Indent_Finder) detects 
+I find that [Indent Finder](http://www.freehackers.org/Indent_Finder) detects 
 above files correctly so I make it into this plugin.
 
 
@@ -45,10 +45,10 @@ You may disable all `event_listeners` in your user settings and add a key bindin
 ```
 
 
-Open-sourced Projects
-=====================
+Acknowledgment
+==============
 
-- [Indent_Finder](http://www.freehackers.org/Indent_Finder): BSD license
+- [Indent Finder](http://www.freehackers.org/Indent_Finder)
 
 
 Supporters <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ATXYY9Y78EQ3Y" target="_blank"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" /></a>

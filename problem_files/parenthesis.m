@@ -1,5 +1,5 @@
 // https://github.com/SublimeTextIssues/Core/issues/1459
-// Guess settings from buffer: Detected as Space/4 but should be Space/2
+// Guess settings from buffer: Detected as Space/2 but should be Space/4
 
 function x = my_roots( coeficientes_do_polinomio )
 
