@@ -72,6 +72,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         if indent_tab > indent_space:
             self.view.settings().set('translate_tabs_to_spaces', False)
+            self.view.settings().set('tab_size', indent_tab)
             self.show_status_message(
                 pluginMessage('Indentation: tabs'),
                 show_message
