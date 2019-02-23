@@ -1,0 +1,30 @@
+[{
+    "caption": "Preferences",
+    "mnemonic": "n",
+    "id": "preferences",
+    "children": [{
+        "caption": "Package Settings",
+        "mnemonic": "P",
+        "id": "package-settings",
+        "children": [{
+            "caption": "IndentFinder",
+            "children": [{
+                "caption": "-"
+            }, {
+                "caption": "README",
+                "command": "open_file",
+                "args": {
+                    "file": "${packages}/IndentFinder/README.md"
+                }
+            }, {
+                "caption": "Changelog",
+                "command": "open_file",
+                "args": {
+                    "file": "${packages}/IndentFinder/CHANGELOG.md"
+                }
+            }, {
+                "caption": "-"
+            }]
+        }]
+    }]
+}]
