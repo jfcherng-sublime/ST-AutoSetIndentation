@@ -56,9 +56,12 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         indent_finder.parse_string(sample)
 
         # possible outputs:
+        #
         #   - space X
-        #   - tab 8
-        #   - mixed tab X space Y
+        #   - tab Y
+        #   - mixed tab Y space X
+        #
+        # where X and Y are integers
         result = str(indent_finder)
 
         indent_tab = re.search(r'\btab\s+([0-9]+)', result)
