@@ -133,12 +133,9 @@ class IndentFinder:
 
     def parse_file( self, fname ):
         self.clear()
-        f = open( fname )
-        l = f.readline()
-        while( l ):
-            self.analyse_line( l )
-            l = f.readline()
-        f.close()
+        with open( fname ) as file:
+            for line in file:
+                self.analyse_line( line )
 
     def clear( self ):
         self.lines = {}

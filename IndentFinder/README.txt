@@ -11,7 +11,7 @@ python run_tests.py
 To install, type:
 python setup.py install
 
-See web page for more information: 
+See web page for more information:
 http://www.freehackers.org/Indent_Finder
 
 History:
