@@ -7,20 +7,20 @@
         "mnemonic": "P",
         "id": "package-settings",
         "children": [{
-            "caption": "IndentFinder",
+            "caption": "AutoSetIndentation",
             "children": [{
                 "caption": "-"
             }, {
                 "caption": "README",
                 "command": "open_file",
                 "args": {
-                    "file": "${packages}/IndentFinder/README.md"
+                    "file": "${packages}/AutoSetIndentation/README.md"
                 }
             }, {
                 "caption": "Changelog",
                 "command": "open_file",
                 "args": {
-                    "file": "${packages}/IndentFinder/CHANGELOG.md"
+                    "file": "${packages}/AutoSetIndentation/CHANGELOG.md"
                 }
             }, {
                 "caption": "-"
