@@ -11,25 +11,10 @@ PLUGIN_SETTINGS = PLUGIN_NAME + '.sublime-settings'
 settings = None
 
 
-def plugin_unloaded():
-    global settings
-
-    settings.clear_on_change(PLUGIN_SETTINGS)
-
-
 def plugin_loaded():
     global settings
 
     settings = sublime.load_settings(PLUGIN_SETTINGS)
-
-    # when the user settings is modified
-    settings.add_on_change(PLUGIN_SETTINGS, plugin_settings_listener)
-
-
-def plugin_settings_listener():
-    """ called when plugin's settings file is changed """
-
-    global settings
 
 
 def print_plugin_message(message):
