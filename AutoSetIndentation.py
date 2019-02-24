@@ -6,7 +6,7 @@ import sublime_plugin
 
 PLUGIN_NAME = __package__
 PLUGIN_DIR = 'Packages/%s' % PLUGIN_NAME
-PLUGIN_SETTINGS = PLUGIN_NAME + '.sublime-settings'
+PLUGIN_SETTINGS = '%s.sublime-settings' % PLUGIN_NAME
 
 settings = None
 
@@ -17,18 +17,24 @@ def plugin_loaded():
     settings = sublime.load_settings(PLUGIN_SETTINGS)
 
 
-def print_plugin_message(message):
-    print(plugin_message(message))
-
-
 def plugin_message(message):
     return '[{0}] {1}'.format(PLUGIN_NAME, message)
+
+
+def print_plugin_message(message, show_message=True):
+    if show_message:
+        print(plugin_message(message))
+
+
+def show_status_message(message, show_message=True):
+    if show_message:
+        sublime.status_message(message)
 
 
 class AutoSetIndentationCommand(sublime_plugin.TextCommand):
     """Examines the contents of the buffer to determine the indentation settings."""
 
-    def run(self, edit, show_message=True, threshold=10):
+    def run(self, edit, show_message=True, sample_length=2**16):
         """
         @brief Run the command.
 
@@ -37,7 +43,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         @param show_message The show message
         """
 
-        sample = self.view.substr(sublime.Region(0, min(self.view.size(), 2**14)))
+        sample = self.view.substr(sublime.Region(0, min(self.view.size(), sample_length)))
         indent_tab, indent_space = self.guess_indentation_from_string(sample)
 
         # more like mixed-indented
@@ -56,16 +62,22 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
             return
 
     def guess_indentation_from_string(self, string):
+        """
+        @brief Guess the indentation of the given string.
+
+        @param self   The object
+        @param string The string
+
+        @return (int, int) A tuple in the form of (indent_tab, indent_space)
+        """
+
         indent_finder = IndentFinder()
         indent_finder.parse_string(string)
 
         # possible outputs:
-        #
         #   - space X
         #   - tab Y
         #   - mixed tab Y space X
-        #
-        # where X and Y are integers
         result = str(indent_finder)
 
         indent_tab = re.search(r'\btab\s+([0-9]+)', result)
@@ -78,7 +90,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
     def set_mixed_indentation(self, indent_tab=4, indent_space=4, show_message=True):
         self.set_tab_indentation(indent_tab, False)
-        self.show_status_message(
+        show_status_message(
             plugin_message('Indentation: tab/%d space/%d (mixed)' % (indent_tab, indent_space)),
             show_message
         )
@@ -86,7 +98,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
     def set_tab_indentation(self, indent_tab=4, show_message=True):
         self.view.settings().set('translate_tabs_to_spaces', False)
         self.view.settings().set('tab_size', indent_tab)
-        self.show_status_message(
+        show_status_message(
             plugin_message('Indentation: tab/%d' % indent_tab),
             show_message
         )
@@ -94,14 +106,10 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
     def set_space_indentation(self, indent_space=4, show_message=True):
         self.view.settings().set('translate_tabs_to_spaces', True)
         self.view.settings().set('tab_size', indent_space)
-        self.show_status_message(
+        show_status_message(
             plugin_message('Indentation: space/%d' % indent_space),
             show_message
         )
-
-    def show_status_message(self, message, show_message=True):
-        if show_message:
-            sublime.status_message(message)
 
 
 class AutoSetIndentationEventListener(sublime_plugin.EventListener):
@@ -171,11 +179,11 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         global settings
 
         try:
-            return settings.get('event_listeners', None)[event]
-        except:
+            return settings.get('event_listeners', {})[event]
+        except KeyError:
             print_plugin_message(
-                '"%s" is not set in user settings (assumed false)' %
-                ('event_listeners.' + event)
+                '"event_listeners[%s]" is not set in user settings (assumed false)' %
+                event
             )
 
             return False
