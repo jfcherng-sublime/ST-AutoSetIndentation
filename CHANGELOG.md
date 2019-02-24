@@ -1,6 +1,11 @@
 # AutoSetIndentation
 
 
+## 1.0.2
+
+- Code tidy.
+
+
 ## 1.0.1
 
 - Fix plugin name.
