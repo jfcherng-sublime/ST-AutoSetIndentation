@@ -8,14 +8,6 @@ PLUGIN_NAME = __package__
 PLUGIN_DIR = 'Packages/%s' % PLUGIN_NAME
 PLUGIN_SETTINGS = '%s.sublime-settings' % PLUGIN_NAME
 
-settings = None
-
-
-def plugin_loaded():
-    global settings
-
-    settings = sublime.load_settings(PLUGIN_SETTINGS)
-
 
 def plugin_message(message):
     return '[{0}] {1}'.format(PLUGIN_NAME, message)
@@ -162,7 +154,7 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         @return True if able to trigger event listener, False otherwise.
         """
 
-        global settings
+        settings = sublime.load_settings(PLUGIN_SETTINGS)
 
         return settings.get('enabled', False) and self.is_event_listener_enabled(event)
 
@@ -176,7 +168,7 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         @return True if event listener enabled, False otherwise.
         """
 
-        global settings
+        settings = sublime.load_settings(PLUGIN_SETTINGS)
 
         try:
             return settings.get('event_listeners', {})[event]
