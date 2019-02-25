@@ -137,6 +137,31 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         if self.can_trigger_event_listener('on_pre_save_async'):
             self.auto_set_indentation(view)
 
+    def on_text_command(self, view, command_name, args):
+        """
+        @brief Replace Sublime Text's "detect_indentation" command with this plugin's.
+
+        @param self         The object
+        @param view         The view
+        @param command_name The command name
+        @param args         The arguments
+
+        @return (str, dict) A tuple in the form of (command, arguments)
+        """
+
+        settings = sublime.load_settings(PLUGIN_SETTINGS)
+
+        if (
+            not settings.get('enabled', False)
+            or not settings.get('hijack_st_detect_indentation', True)
+            or command_name != 'detect_indentation'
+        ):
+            return
+
+        print_plugin_message('"%s" command hijacked' % command_name)
+
+        return ('auto_set_indentation', {'show_message': is_at_front(view)})
+
     def auto_set_indentation(self, view):
         """
         @brief Set the indentation for the current view.

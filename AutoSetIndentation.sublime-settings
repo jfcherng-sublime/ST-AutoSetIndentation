@@ -18,4 +18,6 @@
         // called just before a view is saved
         "on_pre_save_async": false,
     },
+    // replace Sublime Text's "detect_indentation" command with this plugin's
+    "hijack_st_detect_indentation": true,
 }

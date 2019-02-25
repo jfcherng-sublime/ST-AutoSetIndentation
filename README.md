@@ -3,6 +3,9 @@ Sublime-AutoSetIndentation
 
 This plugin automatically detects and sets the indentation for you, by default, when a file is loaded.
 
+If you don't want to replace Sublime Text's `detect_indentation` with this plugin's,
+set the plugin setting `hijack_st_detect_indentation` to `false`.
+
 
 Why Do I Make This?
 ===================
@@ -25,8 +28,6 @@ Installation
 ============
 
 This package is available on Package Control by the name of [AutoSetIndentation](https://packagecontrol.io/packages/AutoSetIndentation).
-
-You may want to disable Sublime Text's built-in indentation detection by setting `detect_indentation` to `false`.
 
 
 User Settings
