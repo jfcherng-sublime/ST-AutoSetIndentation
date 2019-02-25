@@ -3,9 +3,6 @@ Sublime-AutoSetIndentation
 
 This plugin automatically detects and sets the indentation for you, by default, when a file is loaded.
 
-If you don't want to replace Sublime Text's `detect_indentation` with this plugin's,
-set the plugin setting `hijack_st_detect_indentation` to `false`.
-
 
 Why Do I Make This?
 ===================
@@ -24,6 +21,24 @@ I find that [Indent Finder](http://www.freehackers.org/Indent_Finder) detects
 above files correctly so I make it into this plugin.
 
 
+Notes
+=====
+
+- Abbreviations
+
+  - ST = Sublime Text
+  - ASI = AutoSetIndentation (this plugin)
+  
+- If you don't want to replace ST's `detect_indentation` command with ASI's,
+  set the plugin setting `hijack_st_detect_indentation` to `false`.
+  
+- Even if `hijack_st_detect_indentation` is set to `true` by default, ST will
+  still detect the indentation internally before ASI is ready to work.
+  After that, ASI will detect the indentation **again**
+  hence ST's result will be overridden but the detection is done **twice**.
+  You may want to set `detect_indentation` to `false` to skip ST's.
+
+
 Installation
 ============
 
@@ -39,7 +54,8 @@ See [AutoSetIndentation.sublime-settings](https://github.com/jfcherng/Sublime-Au
 Commands
 ========
 
-You may disable all `event_listeners` in your user settings and add a key binding to auto set indentation.
+You may disable all `event_listeners` in your user settings 
+and add a key binding to auto set the indentation whenever you want.
 
 ```javascript
 { "keys": ["ctrl+alt+s", "ctrl+alt+i"], "command": "auto_set_indentation" },
