@@ -23,6 +23,10 @@ def show_status_message(message, show_message=True):
         sublime.status_message(message)
 
 
+def is_at_front(view):
+    return view.window() is not None and view.window().active_view() == view
+
+
 class AutoSetIndentationCommand(sublime_plugin.TextCommand):
     """Examines the contents of the buffer to determine the indentation settings."""
 
@@ -141,8 +145,7 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         @param view The view
         """
 
-        is_at_front = view.window() is not None and view.window().active_view() == view
-        view.run_command('auto_set_indentation', {'show_message': is_at_front})
+        view.run_command('auto_set_indentation', {'show_message': is_at_front(view)})
 
     def can_trigger_event_listener(self, event):
         """
