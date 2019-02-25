@@ -9,12 +9,21 @@
         "children": [{
             "caption": "AutoSetIndentation",
             "children": [{
-                "caption": "-"
+                "caption": "-",
+            }, {
+                "caption": "Settings",
+                "command": "edit_settings",
+                "args": {
+                    "base_file": "${packages}/AutoSetIndentation/AutoSetIndentation.sublime-settings",
+                    "default": "{\n\t$0\n}\n",
+                }
+            }, {
+                "caption": "-",
             }, {
                 "caption": "README",
                 "command": "open_file",
                 "args": {
-                    "file": "${packages}/AutoSetIndentation/README.md"
+                    "file": "${packages}/AutoSetIndentation/README.md",
                 }
             }, {
                 "caption": "Changelog",
@@ -23,7 +32,7 @@
                     "file": "${packages}/AutoSetIndentation/CHANGELOG.md"
                 }
             }, {
-                "caption": "-"
+                "caption": "-",
             }]
         }]
     }]
