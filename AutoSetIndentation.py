@@ -197,6 +197,10 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         if self.can_trigger_event_listener('on_new_async'):
             self.set_indentation_for_view(view)
 
+    def on_post_paste(self, view):
+        if self.can_trigger_event_listener('on_post_paste'):
+            self.set_indentation_for_view(view)
+
     def on_pre_save_async(self, view):
         if self.can_trigger_event_listener('on_pre_save_async'):
             self.set_indentation_for_view(view)
