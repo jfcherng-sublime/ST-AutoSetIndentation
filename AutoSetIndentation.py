@@ -19,7 +19,9 @@ def print_plugin_message(message, show_message=True):
 
 
 def show_status_message(message, show_message=True):
-    if show_message:
+    settings = sublime.load_settings(PLUGIN_SETTINGS)
+
+    if show_message and settings.get('show_status_message', True):
         sublime.status_message(message)
 
 

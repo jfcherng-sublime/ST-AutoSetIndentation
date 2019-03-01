@@ -24,4 +24,6 @@
     "default_indentation": ["space", 4],
     // replace Sublime Text's "detect_indentation" command with this plugin's
     "hijack_st_detect_indentation": true,
+    // show detected results in the status bar
+    "show_status_message": true,
 }
