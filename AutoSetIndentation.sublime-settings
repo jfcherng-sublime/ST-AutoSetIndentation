@@ -18,6 +18,10 @@
         // called just before a view is saved
         "on_pre_save_async": false,
     },
+    // the default indentation if unfortunately the indentation cannot be decided
+    // ["tab",   4] means tab indentation with tab size = 4
+    // ["space", 2] means 2-space indentation
+    "default_indentation": ["space", 4],
     // replace Sublime Text's "detect_indentation" command with this plugin's
     "hijack_st_detect_indentation": true,
 }
