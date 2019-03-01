@@ -177,14 +177,6 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
 
 class AutoSetIndentationEventListener(sublime_plugin.EventListener):
-    def on_activated_async(self, view):
-        if self.can_trigger_event_listener('on_activated_async'):
-            self.set_indentation_for_view(view)
-
-    def on_clone_async(self, view):
-        if self.can_trigger_event_listener('on_clone_async'):
-            self.set_indentation_for_view(view)
-
     def on_load_async(self, view):
         if self.can_trigger_event_listener('on_load_async'):
             self.set_indentation_for_view(view)
@@ -192,19 +184,8 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
     def on_modified_async(self, view):
         v_settings = view.settings()
 
-        if self.can_trigger_event_listener('on_modified_async'):
-            self.set_indentation_for_view(view)
-
         if view.size() == 0:
             v_settings.set('ASI_is_indentation_detected', False)
-
-    def on_new_async(self, view):
-        if self.can_trigger_event_listener('on_new_async'):
-            self.set_indentation_for_view(view)
-
-    def on_pre_save_async(self, view):
-        if self.can_trigger_event_listener('on_pre_save_async'):
-            self.set_indentation_for_view(view)
 
     def on_text_command(self, view, command_name, args):
         """
