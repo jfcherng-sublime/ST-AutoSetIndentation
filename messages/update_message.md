@@ -2,7 +2,7 @@ AutoSetIndentation has been updated. To see the changelog, visit
 Preferences » Package Settings » AutoSetIndentation » Changelog
 
 
-## 1.2.0
+## 1.3.0
 
-- Add setting: `default_indentation`.
-- Code tidy.
+- Add setting: `show_status_message`.
+- Remove useless event listener: `on_post_paste`.

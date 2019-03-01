@@ -1,6 +1,12 @@
 # AutoSetIndentation
 
 
+## 1.3.0
+
+- Add setting: `show_status_message`.
+- Remove useless event listener: `on_post_paste`.
+
+
 ## 1.2.0
 
 - Add setting: `default_indentation`.
