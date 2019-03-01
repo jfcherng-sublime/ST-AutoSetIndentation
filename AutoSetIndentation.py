@@ -190,15 +190,16 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
             self.set_indentation_for_view(view)
 
     def on_modified_async(self, view):
+        v_settings = view.settings()
+
         if self.can_trigger_event_listener('on_modified_async'):
             self.set_indentation_for_view(view)
 
+        if view.size() == 0:
+            v_settings.set('ASI_is_indentation_detected', False)
+
     def on_new_async(self, view):
         if self.can_trigger_event_listener('on_new_async'):
-            self.set_indentation_for_view(view)
-
-    def on_post_paste(self, view):
-        if self.can_trigger_event_listener('on_post_paste'):
             self.set_indentation_for_view(view)
 
     def on_pre_save_async(self, view):
@@ -230,7 +231,28 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
 
         return ('auto_set_indentation', {'show_message': is_at_front(view)})
 
-    def set_indentation_for_view(self, view):
+    def on_post_text_command(self, view, command_name, args):
+        """
+        @brief Set the indentation when the user patses.
+
+        @param self         The object
+        @param view         The view
+        @param command_name The command name
+        @param args         The arguments
+        """
+
+        v_settings = view.settings()
+
+        if (
+            v_settings.get('ASI_is_indentation_detected', False)
+            or not self.can_trigger_event_listener('on_post_paste')
+            or (command_name != 'patse' and command_name != 'paste_and_indent')
+        ):
+            return
+
+        self.set_indentation_for_view(view)
+
+    def set_indentation_for_view(self, view, args={}):
         """
         @brief Set the indentation for the current view.
 
@@ -238,7 +260,17 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         @param view The view
         """
 
-        view.run_command('auto_set_indentation', {'show_message': is_at_front(view)})
+        v_settings = view.settings()
+
+        _args = {
+            'show_message': is_at_front(view),
+        }
+
+        _args.update(args)
+
+        view.run_command('auto_set_indentation', _args)
+
+        v_settings.set('ASI_is_indentation_detected', True)
 
     def can_trigger_event_listener(self, event):
         """
