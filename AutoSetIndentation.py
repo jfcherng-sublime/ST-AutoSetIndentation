@@ -48,22 +48,22 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         # unable to determine, use the default settings
         if indent_tab < 0 and indent_space < 0:
-            self.use_indentation_default(settings.get('default_indentation'))
+            self.use_indentation_default(settings.get('default_indentation'), show_message)
             return
 
         # more like mixed-indented
         if indent_tab > 0 and indent_space > 0:
-            self.use_indentation_mixed(indent_tab, indent_space)
+            self.use_indentation_mixed(indent_tab, indent_space, show_message)
             return
 
         # tab-indented
         if indent_tab > 0:
-            self.use_indentation_tab(indent_tab)
+            self.use_indentation_tab(indent_tab, show_message)
             return
 
         # space-indented
         if indent_space > 0:
-            self.use_indentation_space(indent_space)
+            self.use_indentation_space(indent_space, show_message)
             return
 
     def guess_indentation_from_string(self, string):
