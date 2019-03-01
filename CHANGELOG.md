@@ -1,6 +1,13 @@
 # AutoSetIndentation
 
 
+## 1.3.1
+
+- Add the command to the command palette.
+- Fix `show_message` is ignored in `auto_set_indentation` command.
+- Update the menu.
+
+
 ## 1.3.0
 
 - Add setting: `show_status_message`.
