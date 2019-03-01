@@ -28,7 +28,7 @@ def is_at_front(view):
 
 
 class AutoSetIndentationCommand(sublime_plugin.TextCommand):
-    """Examines the contents of the buffer to determine the indentation settings."""
+    """ Examines the contents of the buffer to determine the indentation settings. """
 
     def run(self, edit, show_message=True, sample_length=2**16):
         """
@@ -46,22 +46,22 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         # unable to determine, use the default settings
         if indent_tab < 0 and indent_space < 0:
-            self.set_indentation_to_default(settings.get('default_indentation'))
+            self.use_indentation_default(settings.get('default_indentation'))
             return
 
         # more like mixed-indented
         if indent_tab > 0 and indent_space > 0:
-            self.set_mixed_indentation(indent_tab, indent_space)
+            self.use_indentation_mixed(indent_tab, indent_space)
             return
 
         # tab-indented
         if indent_tab > 0:
-            self.set_tab_indentation(indent_tab)
+            self.use_indentation_tab(indent_tab)
             return
 
         # space-indented
         if indent_space > 0:
-            self.set_space_indentation(indent_space)
+            self.use_indentation_space(indent_space)
             return
 
     def guess_indentation_from_string(self, string):
@@ -72,7 +72,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         @param string The string
 
         @return (int, int) A tuple in the form of (indent_tab, indent_space)
-                           (-1, -1) if fail to determine
+                           (-1, -1) if unable to determine the indentation
         """
 
         result_unknown = ('unknown', -1)
@@ -99,47 +99,75 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         return (indent_tab, indent_space)
 
-    def set_indentation_to_default(self, default_indentation, show_message=True):
+    def use_indentation_default(self, default_indentation, show_message=True):
         """
         @brief Sets the indentation to default.
 
         @param self                The object
-        @param default_indentation The default indentation in the form of (indent_type, tab_size)
+        @param default_indentation The default indentation in the form of (indent_type, indent_size)
         @param show_message        The show message
         """
 
-        indent_type, tab_size = default_indentation
+        indent_type, indent_size = default_indentation
         indent_type = indent_type.lower()
 
         if indent_type.startswith('tab'):
-            self.set_tab_indentation(tab_size, False)
+            self.use_indentation_tab(indent_size, False)
 
         if indent_type.startswith('space'):
-            self.set_space_indentation(tab_size, False)
+            self.use_indentation_space(indent_size, False)
 
         show_status_message(
-            plugin_message('Indentation: %s/%d (default)' % (indent_type, tab_size)),
+            plugin_message('Indentation: %s/%d (default)' % (indent_type, indent_size)),
             show_message
         )
 
-    def set_mixed_indentation(self, indent_tab=4, indent_space=4, show_message=True):
-        self.set_tab_indentation(indent_tab, False)
+    def use_indentation_mixed(self, indent_tab=4, indent_space=4, show_message=True):
+        """
+        @brief Sets the indentation to mixed.
+
+        @param self         The object
+        @param indent_tab   The indent tab size
+        @param indent_space The indent space size
+        @param show_message The show message
+        """
+
+        self.use_indentation_tab(indent_tab, False)
+
         show_status_message(
             plugin_message('Indentation: tab/%d space/%d (mixed)' % (indent_tab, indent_space)),
             show_message
         )
 
-    def set_tab_indentation(self, indent_tab=4, show_message=True):
+    def use_indentation_tab(self, indent_tab=4, show_message=True):
+        """
+        @brief Sets the indentation to tab.
+
+        @param self         The object
+        @param indent_tab   The indent tab size
+        @param show_message The show message
+        """
+
         self.view.settings().set('translate_tabs_to_spaces', False)
         self.view.settings().set('tab_size', indent_tab)
+
         show_status_message(
             plugin_message('Indentation: tab/%d' % indent_tab),
             show_message
         )
 
-    def set_space_indentation(self, indent_space=4, show_message=True):
+    def use_indentation_space(self, indent_space=4, show_message=True):
+        """
+        @brief Sets the indentation to space.
+
+        @param self         The object
+        @param indent_space The indent space size
+        @param show_message The show message
+        """
+
         self.view.settings().set('translate_tabs_to_spaces', True)
         self.view.settings().set('tab_size', indent_space)
+
         show_status_message(
             plugin_message('Indentation: space/%d' % indent_space),
             show_message
@@ -190,9 +218,9 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         settings = sublime.load_settings(PLUGIN_SETTINGS)
 
         if (
-            not settings.get('enabled', False)
+            command_name != 'detect_indentation'
+            or not settings.get('enabled', False)
             or not settings.get('hijack_st_detect_indentation', True)
-            or command_name != 'detect_indentation'
         ):
             return
 
