@@ -1,6 +1,12 @@
 # AutoSetIndentation
 
 
+## 1.2.0
+
+- Add setting: `default_indentation`.
+- Code tidy.
+
+
 ## 1.1.0
 
 - Add setting: `hijack_st_detect_indentation`.
