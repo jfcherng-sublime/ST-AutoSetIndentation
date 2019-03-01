@@ -13,8 +13,6 @@
         "on_modified_async": false,
         // called when a new buffer is created
         "on_new_async": false,
-        // called after there is a paste operation
-        "on_post_paste": false,
         // called just before a view is saved
         "on_pre_save_async": false,
     },
