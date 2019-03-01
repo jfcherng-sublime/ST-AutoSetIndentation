@@ -32,7 +32,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
     def run(self, edit, show_message=True, sample_length=2**16):
         """
-        @brief Run the command.
+        @brief Run the "auto_set_indentation" command.
 
         @param self         The object
         @param edit         The edit
@@ -177,31 +177,31 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 class AutoSetIndentationEventListener(sublime_plugin.EventListener):
     def on_activated_async(self, view):
         if self.can_trigger_event_listener('on_activated_async'):
-            self.auto_set_indentation(view)
+            self.set_indentation_for_view(view)
 
     def on_clone_async(self, view):
         if self.can_trigger_event_listener('on_clone_async'):
-            self.auto_set_indentation(view)
+            self.set_indentation_for_view(view)
 
     def on_load_async(self, view):
         if self.can_trigger_event_listener('on_load_async'):
-            self.auto_set_indentation(view)
+            self.set_indentation_for_view(view)
 
     def on_modified_async(self, view):
         if self.can_trigger_event_listener('on_modified_async'):
-            self.auto_set_indentation(view)
+            self.set_indentation_for_view(view)
 
     def on_new_async(self, view):
         if self.can_trigger_event_listener('on_new_async'):
-            self.auto_set_indentation(view)
+            self.set_indentation_for_view(view)
 
     def on_post_paste(self, view):
         if self.can_trigger_event_listener('on_post_paste'):
-            self.auto_set_indentation(view)
+            self.set_indentation_for_view(view)
 
     def on_pre_save_async(self, view):
         if self.can_trigger_event_listener('on_pre_save_async'):
-            self.auto_set_indentation(view)
+            self.set_indentation_for_view(view)
 
     def on_text_command(self, view, command_name, args):
         """
@@ -228,7 +228,7 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
 
         return ('auto_set_indentation', {'show_message': is_at_front(view)})
 
-    def auto_set_indentation(self, view):
+    def set_indentation_for_view(self, view):
         """
         @brief Set the indentation for the current view.
 
