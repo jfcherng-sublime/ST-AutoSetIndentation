@@ -30,7 +30,7 @@ def is_view_at_front(view):
 
 
 def is_view_only_invisible_chars(view):
-    return view.find(r'[^\s]', 0).a < 0
+    return view.find(r'[^\s]', 0).begin() < 0
 
 
 class AutoSetIndentationCommand(sublime_plugin.TextCommand):
