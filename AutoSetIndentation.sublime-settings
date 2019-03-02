@@ -1,6 +1,4 @@
 {
-    // enable this plugin?
-    "enabled": true,
     // when should this plugin work?
     "event_listeners": {
         // called when the file is finished loading

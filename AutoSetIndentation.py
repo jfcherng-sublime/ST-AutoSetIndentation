@@ -182,16 +182,14 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
 class AutoSetIndentationEventListener(sublime_plugin.EventListener):
     def on_load_async(self, view):
-        if self.can_trigger_event_listener('on_load_async'):
+        if self.is_event_listener_enabled('on_load_async'):
             self.set_indentation_for_view(view)
 
     def on_modified_async(self, view):
-        v_settings = view.settings()
-
         # when the view is left only invisible chars (\s),
         # we assume the indentation of this view has not been detected yet
         if is_view_only_invisible_chars(view):
-            v_settings.set('ASI_is_indentation_detected', False)
+            view.settings().set('ASI_is_indentation_detected', False)
 
     def on_text_command(self, view, command_name, args):
         """
@@ -209,7 +207,6 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
 
         if (
             command_name != 'detect_indentation'
-            or not settings.get('enabled', False)
             or not settings.get('hijack_st_detect_indentation', True)
         ):
             return
@@ -228,11 +225,9 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         @param args         The arguments
         """
 
-        v_settings = view.settings()
-
         if (
-            v_settings.get('ASI_is_indentation_detected', False)
-            or not self.can_trigger_event_listener('on_post_paste')
+            view.settings().get('ASI_is_indentation_detected', False)
+            or not self.is_event_listener_enabled('on_post_paste')
             or (command_name != 'patse' and command_name != 'paste_and_indent')
         ):
             return
@@ -247,31 +242,13 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         @param view The view
         """
 
-        v_settings = view.settings()
-
         _args = {
             'show_message': is_view_at_front(view),
         }
-
         _args.update(args)
 
         view.run_command('auto_set_indentation', _args)
-
-        v_settings.set('ASI_is_indentation_detected', True)
-
-    def can_trigger_event_listener(self, event):
-        """
-        @brief Check if a event listener is allowed to be triggered.
-
-        @param self  The object
-        @param event The event
-
-        @return True if able to trigger event listener, False otherwise.
-        """
-
-        settings = sublime.load_settings(PLUGIN_SETTINGS)
-
-        return settings.get('enabled', False) and self.is_event_listener_enabled(event)
+        view.settings().set('ASI_is_indentation_detected', True)
 
     def is_event_listener_enabled(self, event):
         """
