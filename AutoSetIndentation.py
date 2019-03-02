@@ -25,8 +25,12 @@ def show_status_message(message, show_message=True):
         sublime.status_message(message)
 
 
-def is_at_front(view):
+def is_view_at_front(view):
     return view.window() is not None and view.window().active_view() == view
+
+
+def is_view_only_invisible_chars(view):
+    return view.find(r'[^\s]', 0).a < 0
 
 
 class AutoSetIndentationCommand(sublime_plugin.TextCommand):
@@ -184,7 +188,9 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
     def on_modified_async(self, view):
         v_settings = view.settings()
 
-        if view.size() == 0:
+        # when the view is left only invisible chars (\s),
+        # we assume the indentation of this view has not been detected yet
+        if is_view_only_invisible_chars(view):
             v_settings.set('ASI_is_indentation_detected', False)
 
     def on_text_command(self, view, command_name, args):
@@ -210,7 +216,7 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
 
         print_plugin_message('"%s" command hijacked' % command_name)
 
-        return ('auto_set_indentation', {'show_message': is_at_front(view)})
+        return ('auto_set_indentation', {'show_message': is_view_at_front(view)})
 
     def on_post_text_command(self, view, command_name, args):
         """
@@ -244,7 +250,7 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         v_settings = view.settings()
 
         _args = {
-            'show_message': is_at_front(view),
+            'show_message': is_view_at_front(view),
         }
 
         _args.update(args)
