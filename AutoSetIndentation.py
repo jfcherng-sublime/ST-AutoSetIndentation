@@ -217,7 +217,7 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
 
     def on_post_text_command(self, view, command_name, args):
         """
-        @brief Set the indentation when the user patses.
+        @brief Set the indentation when the user pastes.
 
         @param self         The object
         @param view         The view
@@ -228,7 +228,7 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         if (
             view.settings().get('ASI_is_indentation_detected', False)
             or not self.is_event_listener_enabled('on_post_paste')
-            or (command_name != 'patse' and command_name != 'paste_and_indent')
+            or (command_name != 'paste' and command_name != 'paste_and_indent')
         ):
             return
 
