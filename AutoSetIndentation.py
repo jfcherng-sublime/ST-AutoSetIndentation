@@ -18,6 +18,19 @@ Indentation = namedtuple('Indentation', ['type', 'size'])
 indentation_unknown = Indentation('unknown', -1)
 
 
+def plugin_loaded():
+    # https://github.com/SublimeTextIssues/Core/issues/5#issuecomment-476225021
+    # A dirty fix for "on_load_async" is not trigger on starting
+
+    for window in sublime.windows():
+        for view in window.views():
+            if (
+                not view.is_loading()
+                and is_event_listener_enabled('on_load_async')
+            ):
+                set_indentation_for_view(view)
+
+
 def plugin_message(message):
     return '[{0}] {1}'.format(PLUGIN_NAME, message)
 
@@ -40,6 +53,45 @@ def is_view_at_front(view):
 
 def is_view_only_invisible_chars(view):
     return view.find(r'[^\s]', 0).begin() < 0
+
+
+def is_event_listener_enabled(event):
+    """
+    @brief Check if a event listener is enabled.
+
+    @param event The event
+
+    @return True if event listener enabled, False otherwise.
+    """
+
+    settings = sublime.load_settings(PLUGIN_SETTINGS)
+
+    try:
+        return settings.get('event_listeners', {})[event]
+    except KeyError:
+        print_plugin_message(
+            '"event_listeners[%s]" is not set in user settings (assumed false)' %
+            event
+        )
+
+        return False
+
+
+def set_indentation_for_view(view, args={}):
+    """
+    @brief Set the indentation for the current view.
+
+    @param view The view
+    @param args The arguments
+    """
+
+    _args = {
+        'show_message': is_view_at_front(view),
+    }
+    _args.update(args)
+
+    view.run_command('auto_set_indentation', _args)
+    view.settings().set('ASI_is_indentation_detected', True)
 
 
 def merge_indentation_tuples(base, spare):
@@ -261,8 +313,8 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
 class AutoSetIndentationEventListener(sublime_plugin.EventListener):
     def on_load_async(self, view):
-        if self.is_event_listener_enabled('on_load_async'):
-            self.set_indentation_for_view(view)
+        if is_event_listener_enabled('on_load_async'):
+            set_indentation_for_view(view)
 
     def on_modified_async(self, view):
         # when the view is left only invisible chars (\s),
@@ -306,47 +358,9 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
 
         if (
             view.settings().get('ASI_is_indentation_detected', False)
-            or not self.is_event_listener_enabled('on_post_paste')
+            or not is_event_listener_enabled('on_post_paste')
             or (command_name != 'paste' and command_name != 'paste_and_indent')
         ):
             return
 
-        self.set_indentation_for_view(view)
-
-    def set_indentation_for_view(self, view, args={}):
-        """
-        @brief Set the indentation for the current view.
-
-        @param self The object
-        @param view The view
-        """
-
-        _args = {
-            'show_message': is_view_at_front(view),
-        }
-        _args.update(args)
-
-        view.run_command('auto_set_indentation', _args)
-        view.settings().set('ASI_is_indentation_detected', True)
-
-    def is_event_listener_enabled(self, event):
-        """
-        @brief Check if a event listener is enabled.
-
-        @param self  The object
-        @param event The event
-
-        @return True if event listener enabled, False otherwise.
-        """
-
-        settings = sublime.load_settings(PLUGIN_SETTINGS)
-
-        try:
-            return settings.get('event_listeners', {})[event]
-        except KeyError:
-            print_plugin_message(
-                '"event_listeners[%s]" is not set in user settings (assumed false)' %
-                event
-            )
-
-            return False
+        set_indentation_for_view(view)
