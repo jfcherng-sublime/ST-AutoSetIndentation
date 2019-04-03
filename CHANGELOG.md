@@ -1,6 +1,13 @@
 # AutoSetIndentation
 
 
+## 1.5.0
+
+- Respect the indentation settings in `.editorconfig` files.
+- Implement a dirty hack for `on_load_async` is not triggered on starting.
+- Fix a typo: `patse` -> `paste`.
+
+
 ## 1.4.0
 
 - Add back the `on_post_paste` event listener.
