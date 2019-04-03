@@ -1,8 +1,13 @@
 from .IndentFinder.indent_finder import IndentFinder
+import os
 import re
 import sublime
 import sublime_plugin
+import sys
 
+# stupid python module system
+sys.path.append(os.path.dirname(__file__))
+from .editorconfig import get_properties, EditorConfigError
 
 PLUGIN_NAME = __package__
 PLUGIN_DIR = 'Packages/%s' % PLUGIN_NAME
@@ -47,8 +52,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         settings = sublime.load_settings(PLUGIN_SETTINGS)
 
-        sample = self.view.substr(sublime.Region(0, min(self.view.size(), sample_length)))
-        indent_tab, indent_space = self.guess_indentation_from_string(sample)
+        indent_tab, indent_space = self.get_indentation_for_view(self.view, sample_length)
 
         # unable to determine, use the default settings
         if indent_tab < 0 and indent_space < 0:
@@ -69,6 +73,81 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         if indent_space > 0:
             self.use_indentation_space(indent_space, show_message)
             return
+
+    def merge_indentation_results(self, base, spare):
+        merged = list(base)
+
+        if merged[0] < 0:
+            merged[0] = spare[0]
+
+        if merged[1] < 0:
+            merged[1] = spare[1]
+
+        return tuple(merged)
+
+    def get_indentation_for_view(self, view, sample_length=2**16):
+        indent_from_editorconfig = self.get_indentation_from_editorconfig()
+
+        # prefer using .editorconfig
+        indent_tab, indent_space = indent_from_editorconfig
+
+        if indent_tab > 0:
+            return (indent_tab, 0)
+
+        if indent_space > 0:
+            return (0, indent_space)
+
+        sample = view.substr(sublime.Region(0, min(view.size(), sample_length)))
+        indent_from_string = self.guess_indentation_from_string(sample)
+
+        return self.merge_indentation_results(
+            indent_from_editorconfig,
+            indent_from_string,
+        )
+
+    def get_indentation_from_editorconfig(self):
+        """
+        @brief Guess the indentation from the .editorconfig file.
+
+        @param self   The object
+
+        @return (int, int) A tuple in the form of (indent_tab, indent_space)
+                           (-1, -1) if unable to determine the indentation
+                           (0, -1) if space-indented but not sure indent_size
+                           (-1, 0) if tab-indented but not sure indent_size
+        """
+
+        file_path = self.view.file_name()
+
+        # is a new buffer so no file path
+        if not file_path:
+            return (-1, -1)
+
+        try:
+            options = get_properties(file_path)
+        except EditorConfigError:
+            return (-1, -1)
+
+        indent_style = options.get('indent_style')
+        indent_size = options.get('indent_size')
+
+        # convert indent_style to str
+        if not isinstance(indent_style, str):
+            indent_style = ''
+
+        # convert indent_size to int
+        try:
+            indent_size = int(indent_size)
+        except (TypeError, ValueError):
+            indent_size = -1 # undetermined
+
+        if indent_style.startswith('space'):
+            return (0, indent_size)
+
+        if indent_style.startswith('tab'):
+            return (indent_size, 0)
+
+        return (-1, -1)
 
     def guess_indentation_from_string(self, string):
         """
