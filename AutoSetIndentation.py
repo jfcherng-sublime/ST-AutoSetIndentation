@@ -55,6 +55,12 @@ def is_view_only_invisible_chars(view):
     return view.find(r'[^\s]', 0).begin() < 0
 
 
+def is_view_set_by_editorconfig_plugin(view):
+    EDITORCONFIG_PLUGIN_MARKER = 'editorconfig'
+
+    return bool(view.settings().get(EDITORCONFIG_PLUGIN_MARKER, False))
+
+
 def is_event_listener_enabled(event):
     """
     @brief Check if a event listener is enabled.
@@ -90,7 +96,14 @@ def set_indentation_for_view(view, args={}):
     }
     _args.update(args)
 
-    view.run_command('auto_set_indentation', _args)
+    if is_view_set_by_editorconfig_plugin(view):
+        show_status_message(
+            plugin_message('EditorConfig detected indentation'),
+            _args['show_message']
+        )
+    else:
+        view.run_command('auto_set_indentation', _args)
+
     view.settings().set('ASI_is_indentation_detected', True)
 
 
