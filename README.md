@@ -28,6 +28,8 @@ Notes
 
   - ST = Sublime Text
   - ASI = AutoSetIndentation (this plugin)
+
+- This plugin respects indentation settings in `.editorconfig` files.
   
 - If you don't want to replace ST's `detect_indentation` command with ASI's,
   set the plugin setting `hijack_st_detect_indentation` to `false`.
