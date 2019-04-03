@@ -1,6 +1,11 @@
 # AutoSetIndentation
 
 
+## 1.5.1
+
+- Disable event-triggered auto set if `EditorConfig` has set the indentation.
+
+
 ## 1.5.0
 
 - Respect the indentation settings in `.editorconfig` files.
