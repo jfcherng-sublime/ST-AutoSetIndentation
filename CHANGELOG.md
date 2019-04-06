@@ -1,6 +1,11 @@
 # AutoSetIndentation
 
 
+## 1.5.2
+
+- Show more details about how the indentation is determined.
+
+
 ## 1.5.1
 
 - Disable event-triggered auto set if `EditorConfig` has set the indentation.
