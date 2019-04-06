@@ -107,6 +107,21 @@ def set_indentation_for_view(view, args={}):
     view.settings().set('ASI_is_indentation_detected', True)
 
 
+def get_ASI_result_sources_for_view(view):
+    return view.settings().get('ASI_result_sources', [])
+
+
+def reset_ASI_result_sources_for_view(view):
+    view.settings().set('ASI_result_sources', [])
+
+
+def add_ASI_result_sources_for_view(view, sources):
+    view.settings().set(
+        'ASI_result_sources',
+        get_ASI_result_sources_for_view(view) + list(sources)
+    )
+
+
 def merge_indentation_tuples(base, spare):
     merged = base._asdict()
 
@@ -133,21 +148,25 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         settings = sublime.load_settings(PLUGIN_SETTINGS)
 
+        reset_ASI_result_sources_for_view(self.view)
+
         indent = self.get_indentation_for_view(self.view, sample_length)
 
         # unable to determine, use the default settings
         if indent.type == indentation_unknown.type:
-            self.use_indentation_default(settings.get('default_indentation'), show_message)
+            reset_ASI_result_sources_for_view(self.view)
+            default_indentation = settings.get('default_indentation')
+            self.use_indentation_default(self.view, default_indentation, show_message)
             return
 
         # tab-indented
         if indent.type == 'tab':
-            self.use_indentation_tab(indent.size, show_message)
+            self.use_indentation_tab(self.view, indent.size, show_message)
             return
 
         # space-indented
         if indent.type == 'space':
-            self.use_indentation_space(indent.size, show_message)
+            self.use_indentation_space(self.view, indent.size, show_message)
             return
 
     def get_indentation_for_view(self, view, sample_length=2**16):
@@ -165,6 +184,9 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         indentation_editorconfig = self.get_indentation_from_editorconfig()
 
+        if indentation_editorconfig != indentation_unknown:
+            add_ASI_result_sources_for_view(view, ['.editorconfig'])
+
         # .editorconfig provides all needed informations
         if (
             indentation_editorconfig.type != indentation_unknown.type
@@ -174,6 +196,8 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         sample = view.substr(sublime.Region(0, min(view.size(), sample_length)))
         indentation_guessed = self.guess_indentation_from_string(sample)
+
+        add_ASI_result_sources_for_view(view, ['guessing'])
 
         return merge_indentation_tuples(
             indentation_editorconfig,
@@ -266,11 +290,12 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         return Indentation(**indentation)
 
-    def use_indentation_default(self, default_indentation, show_message=True):
+    def use_indentation_default(self, view, default_indentation, show_message=True):
         """
         @brief Sets the indentation to default.
 
         @param self                The object
+        @param view                The view
         @param default_indentation The default indentation in the form of (indent_type, indent_size)
         @param show_message        The show message
         """
@@ -279,21 +304,22 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         indent_type = indent_type.lower()
 
         if indent_type.startswith('tab'):
-            self.use_indentation_tab(indent_size, False)
+            self.use_indentation_tab(view, indent_size, False)
 
         if indent_type.startswith('space'):
-            self.use_indentation_space(indent_size, False)
+            self.use_indentation_space(view, indent_size, False)
 
         show_status_message(
-            plugin_message('Indentation: %s/%d (default)' % (indent_type, indent_size)),
+            plugin_message('Indentation: {}/{} (default)'.format(indent_type, indent_size)),
             show_message
         )
 
-    def use_indentation_tab(self, indent_tab=4, show_message=True):
+    def use_indentation_tab(self, view, indent_tab=4, show_message=True):
         """
         @brief Sets the indentation to tab.
 
         @param self         The object
+        @param view         The view
         @param indent_tab   The indent tab size
         @param show_message The show message
         """
@@ -302,15 +328,19 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         self.view.settings().set('tab_size', indent_tab)
 
         show_status_message(
-            plugin_message('Indentation: tab/%d' % indent_tab),
+            plugin_message('Indentation: tab/{} (by {})'.format(
+                indent_tab,
+                ', '.join(get_ASI_result_sources_for_view(view))
+            )),
             show_message
         )
 
-    def use_indentation_space(self, indent_space=4, show_message=True):
+    def use_indentation_space(self, view, indent_space=4, show_message=True):
         """
         @brief Sets the indentation to space.
 
         @param self         The object
+        @param view         The view
         @param indent_space The indent space size
         @param show_message The show message
         """
@@ -319,7 +349,10 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         self.view.settings().set('tab_size', indent_space)
 
         show_status_message(
-            plugin_message('Indentation: space/%d' % indent_space),
+            plugin_message('Indentation: space/{} (by {})'.format(
+                indent_space,
+                ', '.join(get_ASI_result_sources_for_view(view))
+            )),
             show_message
         )
 
