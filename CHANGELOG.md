@@ -1,6 +1,11 @@
 # AutoSetIndentation
 
 
+## 1.5.3
+
+- Fix default indentation (fallback) is not used in some cases.
+
+
 ## 1.5.2
 
 - Show more details about how the indentation is determined.
