@@ -143,7 +143,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         indent = self.get_indentation_for_view(self.view, sample_length)
 
         # unable to determine, use the default settings
-        if indent.type == indentation_unknown.type:
+        if indent.type == indentation_unknown.type or indent.size <= 0:
             reset_ASI_result_sources_for_view(self.view)
             default_indentation = settings.get("default_indentation")
             self.use_indentation_default(self.view, default_indentation, show_message)
