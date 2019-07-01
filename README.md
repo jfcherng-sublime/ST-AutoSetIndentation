@@ -7,17 +7,18 @@ This plugin automatically detects and sets the indentation for you, by default, 
 Why Do I Make This?
 ===================
 
-Sublime Text detects the indentation when a file is loaded 
+Sublime Text detects the indentation when a file is loaded
 if `detect_indentation` is set to `true`, which is the default settings.
 
 However, its detection is wrong sometimes.
 You could give following cases a try!
 
 - Files under the [problem_files/](https://github.com/jfcherng/Sublime-AutoSetIndentation/tree/master/problem_files)
+- https://forum.sublimetext.com/t/detect-indentation-with-3-spaces-is-broken/45143
 - https://github.com/SublimeTextIssues/Core/issues/1459
 - https://github.com/SublimeTextIssues/Core/issues/1640
 
-I find that [Indent Finder](http://www.freehackers.org/Indent_Finder) detects 
+I find that [Indent Finder](http://www.freehackers.org/Indent_Finder) detects
 above files correctly so I make it into this plugin.
 
 
@@ -30,10 +31,10 @@ Notes
   - ASI = AutoSetIndentation (this plugin)
 
 - This plugin respects indentation settings in `.editorconfig` files.
-  
+
 - If you don't want to replace ST's `detect_indentation` command with ASI's,
   set the plugin setting `hijack_st_detect_indentation` to `false`.
-  
+
 - Even if `hijack_st_detect_indentation` is set to `true` by default, ST will
   still detect the indentation internally before ASI is ready to work.
   After that, ASI will detect the indentation **again**
@@ -56,7 +57,7 @@ See [AutoSetIndentation.sublime-settings](https://github.com/jfcherng/Sublime-Au
 Commands
 ========
 
-You may disable all `event_listeners` in your user settings 
+You may disable all `event_listeners` in your user settings
 and add a key binding to auto set the indentation whenever you want.
 
 ```javascript
@@ -67,6 +68,7 @@ and add a key binding to auto set the indentation whenever you want.
 Acknowledgment
 ==============
 
+- [editorconfig](https://github.com/editorconfig/editorconfig-core-py)
 - [Indent Finder](http://www.freehackers.org/Indent_Finder)
 
 
