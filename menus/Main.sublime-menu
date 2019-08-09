@@ -35,7 +35,7 @@
                     "file": "${packages}/AutoSetIndentation/README.md",
                 },
             }, {
-                "caption": "Changelog",
+                "caption": "CHANGELOG",
                 "command": "open_file",
                 "args": {
                     "file": "${packages}/AutoSetIndentation/CHANGELOG.md",

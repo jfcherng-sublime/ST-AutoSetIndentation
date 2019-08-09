@@ -1,5 +1,5 @@
 AutoSetIndentation has been updated. To see the changelog, visit
-Preferences » Package Settings » AutoSetIndentation » Changelog
+Preferences » Package Settings » AutoSetIndentation » CHANGELOG
 
 
 ## 1.5.3

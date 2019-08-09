@@ -1,6 +1,16 @@
 # AutoSetIndentation
 
 
+## 1.5.4
+
+There is no bug fix. Just some source codes maintenances.
+
+- Put menu files to `menus/`.
+- Split out `AutoSetIndentationCommand.py` from `AutoSetIndentation.py`.
+- Add some type hinting to source codes.
+- Source codes are formatted with [black](https://github.com/psf/black).
+
+
 ## 1.5.3
 
 - Fix default indentation (fallback) is not used in some cases.
