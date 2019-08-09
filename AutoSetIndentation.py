@@ -1,14 +1,9 @@
 from collections import namedtuple
-import os
 import re
 import sublime
 import sublime_plugin
-import sys
-
-# stupid python module system
-sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
-from editorconfig import get_properties, EditorConfigError
-from IndentFinder.indent_finder import IndentFinder
+from .libs.editorconfig import get_properties, EditorConfigError
+from .libs.IndentFinder.indent_finder import IndentFinder
 
 PLUGIN_NAME = __package__
 PLUGIN_DIR = 'Packages/%s' % PLUGIN_NAME
