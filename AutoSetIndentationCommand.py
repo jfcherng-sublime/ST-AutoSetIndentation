@@ -1,11 +1,16 @@
 import collections
+import os
 import re
 import sublime
 import sublime_plugin
-from .libs.editorconfig import get_properties, EditorConfigError
-from .libs.IndentFinder.indent_finder import IndentFinder
+import sys
 from .log import msg
 from .settings import get_setting, show_status_message
+
+# stupid python module system
+sys.path.append(os.path.join(os.path.dirname(__file__), "libs"))
+from editorconfig import get_properties, EditorConfigError
+from IndentFinder.indent_finder import IndentFinder
 
 Indentation = collections.namedtuple("Indentation", ["type", "size"])
 INDENTATION_UNKNOWN = Indentation("unknown", -1)
