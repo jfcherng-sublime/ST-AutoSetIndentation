@@ -1,7 +1,7 @@
 import sublime
 import sublime_plugin
-from .log import msg, print_msg
-from .settings import get_setting, show_status_message
+from .log import msg, print_msg, show_status_message
+from .settings import get_setting
 
 
 def plugin_loaded() -> None:

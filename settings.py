@@ -52,15 +52,3 @@ def get_setting(key: str, default=None):
     """
 
     return get_settings_object().get(key, default)
-
-
-def show_status_message(message, show_message=True):
-    """
-    @brief Shows message in the status bar.
-
-    @param message      The message
-    @param show_message Whether to show the message
-    """
-
-    if show_message and get_setting("show_status_message"):
-        sublime.status_message(message)

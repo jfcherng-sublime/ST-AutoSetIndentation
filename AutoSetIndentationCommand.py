@@ -4,8 +4,8 @@ import re
 import sublime
 import sublime_plugin
 import sys
-from .log import msg
-from .settings import get_setting, show_status_message
+from .log import msg, show_status_message
+from .settings import get_setting
 
 # stupid python module system
 sys.path.append(os.path.join(os.path.dirname(__file__), "libs"))
