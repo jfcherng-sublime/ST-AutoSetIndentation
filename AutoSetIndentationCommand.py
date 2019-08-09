@@ -8,28 +8,28 @@ from .log import msg
 from .settings import get_setting, show_status_message
 
 Indentation = collections.namedtuple("Indentation", ["type", "size"])
-indentation_unknown = Indentation("unknown", -1)
+INDENTATION_UNKNOWN = Indentation("unknown", -1)
 
 
-def get_ASI_result_sources_for_view(view):
+def get_ASI_result_sources_for_view(view: sublime.View) -> list:
     return view.settings().get("ASI_result_sources", [])
 
 
-def reset_ASI_result_sources_for_view(view):
+def reset_ASI_result_sources_for_view(view: sublime.View) -> None:
     view.settings().set("ASI_result_sources", [])
 
 
-def add_ASI_result_sources_for_view(view, sources):
+def add_ASI_result_sources_for_view(view: sublime.View, sources: list) -> None:
     view.settings().set("ASI_result_sources", get_ASI_result_sources_for_view(view) + list(sources))
 
 
-def merge_indentation_tuples(base, spare):
+def merge_indentation_tuples(base: Indentation, spare: Indentation) -> Indentation:
     merged = base._asdict()
 
-    if merged["type"] == indentation_unknown.type:
+    if merged["type"] == INDENTATION_UNKNOWN.type:
         merged["type"] = spare.type
 
-    if merged["size"] == indentation_unknown.size:
+    if merged["size"] == INDENTATION_UNKNOWN.size:
         merged["size"] = spare.size
 
     return Indentation(**merged)
@@ -38,7 +38,9 @@ def merge_indentation_tuples(base, spare):
 class AutoSetIndentationCommand(sublime_plugin.TextCommand):
     """ Examines the contents of the buffer to determine the indentation settings. """
 
-    def run(self, edit, show_message=True, sample_length=2 ** 16):
+    def run(
+        self, edit: sublime.Edit, show_message: bool = True, sample_length: int = 2 ** 16
+    ) -> None:
         """
         @brief Run the "auto_set_indentation" command.
 
@@ -52,7 +54,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         indent = self.get_indentation_for_view(self.view, sample_length)
 
         # unable to determine, use the default settings
-        if indent.type == indentation_unknown.type or indent.size <= 0:
+        if indent.type == INDENTATION_UNKNOWN.type or indent.size <= 0:
             reset_ASI_result_sources_for_view(self.view)
             default_indentation = get_setting("default_indentation")
             self.use_indentation_default(self.view, default_indentation, show_message)
@@ -68,7 +70,9 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
             self.use_indentation_space(self.view, indent.size, show_message)
             return
 
-    def get_indentation_for_view(self, view, sample_length=2 ** 16):
+    def get_indentation_for_view(
+        self, view: sublime.View, sample_length: int = 2 ** 16
+    ) -> Indentation:
         """
         @brief Guess the indentation for the view.
                This would first try using configs from the .editorconfig file
@@ -78,18 +82,18 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         @param view          The view
         @param sample_length The sample length
 
-        @return The indentation for view.
+        @return The indentation namedtuple for view.
         """
 
         indentation_editorconfig = self.get_indentation_from_editorconfig()
 
-        if indentation_editorconfig != indentation_unknown:
+        if indentation_editorconfig != INDENTATION_UNKNOWN:
             add_ASI_result_sources_for_view(view, [".editorconfig"])
 
         # .editorconfig provides all needed informations
         if (
-            indentation_editorconfig.type != indentation_unknown.type
-            and indentation_editorconfig.size != indentation_unknown.size
+            indentation_editorconfig.type != INDENTATION_UNKNOWN.type
+            and indentation_editorconfig.size != INDENTATION_UNKNOWN.size
         ):
             return indentation_editorconfig
 
@@ -109,31 +113,31 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         @return Indentation namedtuple
         """
 
-        indentation = indentation_unknown._asdict()
+        indentation = INDENTATION_UNKNOWN._asdict()
 
         file_path = self.view.file_name()
 
         # is a new buffer so no file path
         if not file_path:
-            return indentation_unknown
+            return INDENTATION_UNKNOWN
 
         try:
             options = get_properties(file_path)
         except EditorConfigError:
-            return indentation_unknown
+            return INDENTATION_UNKNOWN
 
         indent_style = options.get("indent_style")
         indent_size = options.get("indent_size")
 
         # sanitize indent_style
         if indent_style != "space" and indent_style != "tab":
-            indent_style = indentation_unknown.type
+            indent_style = INDENTATION_UNKNOWN.type
 
         # sanitize indent_size
         try:
             indent_size = int(indent_size)
         except (TypeError, ValueError):
-            indent_size = indentation_unknown.size
+            indent_size = INDENTATION_UNKNOWN.size
 
         if indent_style == "space" or indent_style == "tab":
             indentation["type"] = indent_style
@@ -141,9 +145,9 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
             return Indentation(**indentation)
 
-        return indentation_unknown
+        return INDENTATION_UNKNOWN
 
-    def guess_indentation_from_string(self, string):
+    def guess_indentation_from_string(self, string: str) -> Indentation:
         """
         @brief Guess the indentation of the given string.
 
@@ -153,9 +157,9 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         @return Indentation namedtuple
         """
 
-        indentation = indentation_unknown._asdict()
+        indentation = INDENTATION_UNKNOWN._asdict()
 
-        indent_finder = IndentFinder(tuple(indentation_unknown))
+        indent_finder = IndentFinder(tuple(INDENTATION_UNKNOWN))
         indent_finder.parse_string(string)
 
         # possible outputs:
@@ -166,14 +170,14 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         finder_result = str(indent_finder)
 
         # unable to determine the indentation
-        if finder_result == "{type} {size}".format(**indentation_unknown._asdict()):
-            return indentation_unknown
+        if finder_result == "{type} {size}".format_map(INDENTATION_UNKNOWN._asdict()):
+            return INDENTATION_UNKNOWN
 
-        indent_tab = re.search(r"\btab\s+([0-9]+)", finder_result)
-        indent_tab = int(indent_tab.group(1)) if indent_tab else 0
+        indent_tab = re.search(r"\btab\s+(?P<size>[0-9]+)", finder_result)
+        indent_tab = int(indent_tab.group("size")) if indent_tab else 0
 
-        indent_space = re.search(r"\bspace\s+([0-9]+)", finder_result)
-        indent_space = int(indent_space.group(1)) if indent_space else 0
+        indent_space = re.search(r"\bspace\s+(?P<size>[0-9]+)", finder_result)
+        indent_space = int(indent_space.group("size")) if indent_space else 0
 
         # note that for mixed indentation, we assume it's tab-indented
         if indent_tab > 0:
@@ -186,13 +190,15 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         return Indentation(**indentation)
 
-    def use_indentation_default(self, view, default_indentation, show_message=True):
+    def use_indentation_default(
+        self, view: sublime.View, default_indentation: list, show_message: bool = True
+    ) -> None:
         """
         @brief Sets the indentation to default.
 
         @param self                The object
         @param view                The view
-        @param default_indentation The default indentation in the form of (indent_type, indent_size)
+        @param default_indentation The default indentation in the form of [indent_type, indent_size]
         @param show_message        The show message
         """
 
@@ -209,7 +215,9 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
             msg("Indentation: {}/{} (default)".format(indent_type, indent_size)), show_message
         )
 
-    def use_indentation_tab(self, view, indent_tab=4, show_message=True):
+    def use_indentation_tab(
+        self, view: sublime.View, indent_tab: int = 4, show_message: bool = True
+    ) -> None:
         """
         @brief Sets the indentation to tab.
 
@@ -231,7 +239,9 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
             show_message,
         )
 
-    def use_indentation_space(self, view, indent_space=4, show_message=True):
+    def use_indentation_space(
+        self, view: sublime.View, indent_space: int = 4, show_message: bool = True
+    ) -> None:
         """
         @brief Sets the indentation to space.
 
