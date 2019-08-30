@@ -138,7 +138,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         return merge_indentation_tuples(indentation_editorconfig, indentation_guessed)
 
-    def get_indentation_from_editorconfig(self):
+    def get_indentation_from_editorconfig(self) -> Indentation:
         """
         @brief Guess the indentation from the .editorconfig file.
 
