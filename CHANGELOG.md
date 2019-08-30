@@ -1,6 +1,11 @@
 # AutoSetIndentation
 
 
+## 1.5.5
+
+- Always use tab indentation for `Makefile` syntax.
+
+
 ## 1.5.4
 
 There is no bug fix. Just some source codes maintenances.
