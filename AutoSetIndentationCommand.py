@@ -58,6 +58,10 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         indent = self.get_indentation_for_view(self.view, sample_length)
 
+        # if a special indentation case is met, there is no need to run more codes
+        if self.special_indentation_cases(self.view, indent, show_message):
+            return
+
         # unable to determine, use the default settings
         if indent.type == INDENTATION_UNKNOWN.type or indent.size <= 0:
             reset_ASI_result_sources_for_view(self.view)
@@ -74,6 +78,31 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         if indent.type == "space":
             self.use_indentation_space(self.view, indent.size, show_message)
             return
+
+    def special_indentation_cases(
+        self, view: sublime.View, indent: Indentation, show_message: bool = True
+    ) -> bool:
+        """
+        @brief Handle some special indentation cases.
+
+        @param self         The object
+        @param indent       The indent
+        @param show_message The show message
+
+        @return True if the  indentation has been set during execution, False otherwise.
+        """
+
+        default_indentation = get_setting("default_indentation")
+        indent_size = indent.size if indent.size >= 0 else default_indentation[1]
+
+        # makefile only accepts tab indentation
+        if view.match_selector(0, "source.makefile"):
+            add_ASI_result_sources_for_view(view, ["special"])
+            self.use_indentation_tab(view, indent_size, show_message)
+
+            return True
+
+        return False
 
     def get_indentation_for_view(
         self, view: sublime.View, sample_length: int = 2 ** 16
