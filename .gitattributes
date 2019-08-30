@@ -1,8 +1,8 @@
+.editorconfig export-ignore
+.gitattributes export-ignore
 .gitattributes export-ignore
 .github/ export-ignore
 .gitignore export-ignore
-
+.gitignore export-ignore
 docs/ export-ignore
-
-.editorconfig export-ignore
 pyproject.toml export-ignore
