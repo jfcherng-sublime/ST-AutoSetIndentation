@@ -1,6 +1,11 @@
 # AutoSetIndentation
 
 
+## 1.6.1
+
+- Introduce `mypy` for static analysis.
+
+
 ## 1.6.0
 
 - Add and utilize the `typing` module.
