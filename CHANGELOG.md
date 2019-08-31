@@ -1,6 +1,12 @@
 # AutoSetIndentation
 
 
+## 1.6.0
+
+- Add and utilize the `typing` module.
+- Changed plugin directory structure.
+
+
 ## 1.5.5
 
 - Always use tab indentation for `Makefile` syntax.

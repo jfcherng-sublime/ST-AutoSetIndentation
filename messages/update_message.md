@@ -2,6 +2,7 @@ AutoSetIndentation has been updated. To see the changelog, visit
 Preferences » Package Settings » AutoSetIndentation » CHANGELOG
 
 
-## 1.5.5
+## 1.6.0
 
-- Always use tab indentation for `Makefile` syntax.
+- Add and utilize the `typing` module.
+- Changed plugin directory structure.
