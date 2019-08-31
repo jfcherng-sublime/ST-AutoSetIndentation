@@ -8,7 +8,9 @@ def get_package_name() -> str:
     @return The package name.
     """
 
-    return __package__
+    # __package__ will be "THE_PLUGIN_NAME.plugin" under this folder structure
+    # anyway, the top module should always be the plugin name
+    return __package__.partition(".")[0]
 
 
 def get_package_path() -> str:
@@ -28,7 +30,7 @@ def get_settings_file() -> str:
     @return The settings file name.
     """
 
-    return "AutoSetIndentation.sublime-settings"
+    return get_package_name() + ".sublime-settings"
 
 
 def get_settings_object() -> sublime.Settings:

@@ -1,16 +1,12 @@
 import collections
-import os
 import re
 import sublime
 import sublime_plugin
-import sys
-from .log import msg, show_status_message
-from .settings import get_setting
-
-# stupid python module system
-sys.path.append(os.path.join(os.path.dirname(__file__), "libs"))
 from editorconfig import get_properties, EditorConfigError
 from IndentFinder.indent_finder import IndentFinder
+from typing import List
+from .log import msg, show_status_message
+from .settings import get_setting
 
 Indentation = collections.namedtuple("Indentation", ["type", "size"])
 INDENTATION_UNKNOWN = Indentation("unknown", -1)
@@ -65,8 +61,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         # unable to determine, use the default settings
         if indent.type == INDENTATION_UNKNOWN.type or indent.size <= 0:
             reset_ASI_result_sources_for_view(self.view)
-            default_indentation = get_setting("default_indentation")
-            self.use_indentation_default(self.view, default_indentation, show_message)
+            self.use_indentation_default(self.view, show_message)
             return
 
         # tab-indented
@@ -224,19 +219,16 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         return Indentation(**indentation)
 
-    def use_indentation_default(
-        self, view: sublime.View, default_indentation: list, show_message: bool = True
-    ) -> None:
+    def use_indentation_default(self, view: sublime.View, show_message: bool = True) -> None:
         """
         @brief Sets the indentation to default.
 
         @param self                The object
         @param view                The view
-        @param default_indentation The default indentation in the form of [indent_type, indent_size]
         @param show_message        The show message
         """
 
-        indent_type, indent_size = default_indentation
+        indent_type, indent_size = get_setting("default_indentation")
         indent_type = indent_type.lower()
 
         if indent_type.startswith("tab"):
