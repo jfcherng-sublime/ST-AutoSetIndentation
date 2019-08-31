@@ -5,11 +5,19 @@ from .log import msg, print_msg, show_status_message
 
 
 def is_view_at_front(view: sublime.View) -> bool:
-    return view and view.window() and view.window().active_view() == view
+    if not view:
+        return False
+
+    window = view.window()
+
+    if not window:
+        return False
+
+    return view == window.active_view()
 
 
 def is_view_only_invisible_chars(view: sublime.View) -> bool:
-    return view and view.find(r"[^\s]", 0).begin() < 0
+    return bool(view and view.find(r"[^\s]", 0).begin() < 0)
 
 
 def is_view_set_by_editorconfig_plugin(view: sublime.View) -> bool:

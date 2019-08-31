@@ -1,5 +1,6 @@
 # Sublime-AutoSetIndentation
 
+<a href="https://travis-ci.org/jfcherng/Sublime-AutoSetIndentation"><img alt="Travis (.org) branch" src="https://img.shields.io/travis/jfcherng/Sublime-AutoSetIndentation/master"></a>
 <a href="https://packagecontrol.io/packages/AutoSetIndentation"><img alt="Package Control" src="https://img.shields.io/packagecontrol/dt/AutoSetIndentation"></a>
 <a href="https://github.com/jfcherng/Sublime-AutoSetIndentation/tags"><img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/tag/jfcherng/Sublime-AutoSetIndentation?logo=github"></a>
 <a href="https://github.com/jfcherng/Sublime-AutoSetIndentation/blob/master/LICENSE"><img alt="Project license" src="https://img.shields.io/github/license/jfcherng/Sublime-AutoSetIndentation?logo=github"></a>

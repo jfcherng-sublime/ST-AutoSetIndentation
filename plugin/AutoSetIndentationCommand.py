@@ -13,7 +13,7 @@ INDENTATION_UNKNOWN = Indentation("unknown", -1)
 
 
 def get_ASI_result_sources_for_view(view: sublime.View) -> List[str]:
-    return view.settings().get("ASI_result_sources", [])
+    return view.settings().get("ASI_result_sources", [])  # type: ignore
 
 
 def reset_ASI_result_sources_for_view(view: sublime.View) -> None:
@@ -202,11 +202,11 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         if finder_result == "{type} {size}".format_map(INDENTATION_UNKNOWN._asdict()):
             return INDENTATION_UNKNOWN
 
-        indent_tab = re.search(r"\btab\s+(?P<size>[0-9]+)", finder_result)
-        indent_tab = int(indent_tab.group("size")) if indent_tab else 0
+        indent_tab_m = re.search(r"\btab\s+(?P<size>[0-9]+)", finder_result)
+        indent_tab = int(indent_tab_m.group("size")) if indent_tab_m else 0
 
-        indent_space = re.search(r"\bspace\s+(?P<size>[0-9]+)", finder_result)
-        indent_space = int(indent_space.group("size")) if indent_space else 0
+        indent_space_m = re.search(r"\bspace\s+(?P<size>[0-9]+)", finder_result)
+        indent_space = int(indent_space_m.group("size")) if indent_space_m else 0
 
         # note that for mixed indentation, we assume it's tab-indented
         if indent_tab > 0:
