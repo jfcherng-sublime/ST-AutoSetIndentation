@@ -1,4 +1,5 @@
 import sublime
+from typing import Any, Optional
 
 
 def get_package_name() -> str:
@@ -43,7 +44,7 @@ def get_settings_object() -> sublime.Settings:
     return sublime.load_settings(get_settings_file())
 
 
-def get_setting(key: str, default=None):
+def get_setting(key: str, default: Optional[Any] = None) -> Any:
     """
     @brief Get the plugin setting with the key.
 

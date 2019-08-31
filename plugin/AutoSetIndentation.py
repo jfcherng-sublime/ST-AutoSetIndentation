@@ -1,5 +1,6 @@
 import sublime
 import sublime_plugin
+from typing import Tuple, Dict
 from .functions import (
     is_view_at_front,
     is_view_only_invisible_chars,
@@ -21,7 +22,9 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         if is_view_only_invisible_chars(view):
             view.settings().set("ASI_is_indentation_detected", False)
 
-    def on_text_command(self, view: sublime.View, command_name: str, args: dict):
+    def on_text_command(
+        self, view: sublime.View, command_name: str, args: dict
+    ) -> Tuple[str, Dict]:
         """
         @brief Replace Sublime Text's "detect_indentation" command with this plugin's.
 
@@ -30,7 +33,7 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         @param command_name The command name
         @param args         The arguments
 
-        @return (str, dict) A tuple in the form of (command, arguments)
+        @return A tuple in the form of (command, arguments)
         """
 
         if command_name != "detect_indentation" or not get_setting("hijack_st_detect_indentation"):

@@ -1,4 +1,5 @@
 import sublime
+from typing import Any, Dict
 from .settings import get_setting
 from .log import msg, print_msg, show_status_message
 
@@ -34,7 +35,7 @@ def is_event_listener_enabled(event: str) -> bool:
         return False
 
 
-def set_indentation_for_view(view: sublime.View, args: dict = {}) -> None:
+def set_indentation_for_view(view: sublime.View, args: Dict[str, Any] = {}) -> None:
     """
     @brief Set the indentation for the current view.
 

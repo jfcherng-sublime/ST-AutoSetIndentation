@@ -12,7 +12,7 @@ Indentation = collections.namedtuple("Indentation", ["type", "size"])
 INDENTATION_UNKNOWN = Indentation("unknown", -1)
 
 
-def get_ASI_result_sources_for_view(view: sublime.View) -> list:
+def get_ASI_result_sources_for_view(view: sublime.View) -> List[str]:
     return view.settings().get("ASI_result_sources", [])
 
 
@@ -20,7 +20,7 @@ def reset_ASI_result_sources_for_view(view: sublime.View) -> None:
     view.settings().set("ASI_result_sources", [])
 
 
-def add_ASI_result_sources_for_view(view: sublime.View, sources: list) -> None:
+def add_ASI_result_sources_for_view(view: sublime.View, sources: List[str]) -> None:
     view.settings().set("ASI_result_sources", get_ASI_result_sources_for_view(view) + list(sources))
 
 
