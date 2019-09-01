@@ -34,7 +34,7 @@ above files correctly so I make it into this plugin.
   - ST = Sublime Text
   - ASI = AutoSetIndentation (this plugin)
 
-- This plugin respects indentation settings in `.editorconfig` files.
+- ASI respects indentation settings from `.editorconfig` files.
 
 - If you don't want to replace ST's `detect_indentation` command with ASI's,
   set the plugin setting `hijack_st_detect_indentation` to `false`.
@@ -43,7 +43,7 @@ above files correctly so I make it into this plugin.
   still detect the indentation internally before ASI is ready to work.
   After that, ASI will detect the indentation **again**
   hence ST's result will be overridden but the detection is done **twice**.
-  You may want to set `detect_indentation` to `false` to skip ST's.
+  Therefore, you may want to set `detect_indentation` to `false` to skip ST's.
 
 
 ## Installation
@@ -51,9 +51,12 @@ above files correctly so I make it into this plugin.
 This package is available on Package Control by the name of [AutoSetIndentation](https://packagecontrol.io/packages/AutoSetIndentation).
 
 
-## User Settings
+## Settings
 
-See [AutoSetIndentation.sublime-settings](https://github.com/jfcherng/Sublime-AutoSetIndentation/blob/master/AutoSetIndentation.sublime-settings).
+To edit settings, go to `Preferences` » `Package Settings` » `AutoSetIndentation` » `Settings`.
+
+I think the [settings file](https://github.com/jfcherng/Sublime-AutoSetIndentation/blob/master/AutoSetIndentation.sublime-settings)
+is self-explanatory. But if you still have questions, feel free to open an issue.
 
 
 ## Commands
