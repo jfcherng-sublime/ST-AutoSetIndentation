@@ -1,14 +1,14 @@
 import sublime
 import sublime_plugin
 from typing import Tuple, Dict, Optional
-from .functions import (
+from ..functions import (
     is_view_at_front,
     is_view_only_invisible_chars,
     is_event_listener_enabled,
     set_indentation_for_view,
 )
-from .log import print_msg
-from .settings import get_setting
+from ..log import print_msg
+from ..settings import get_setting
 
 
 class AutoSetIndentationEventListener(sublime_plugin.EventListener):

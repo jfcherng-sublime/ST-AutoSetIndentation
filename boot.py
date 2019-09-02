@@ -1,8 +1,8 @@
 from .plugin import set_up, tear_down
 
 # main plugin classes
-from .plugin.AutoSetIndentation import *
-from .plugin.AutoSetIndentationCommand import *
+from .plugin.sublime_text.AutoSetIndentation import *
+from .plugin.sublime_text.AutoSetIndentationCommand import *
 
 
 def plugin_loaded() -> None:

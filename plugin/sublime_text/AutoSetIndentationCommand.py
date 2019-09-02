@@ -3,10 +3,10 @@ import re
 import sublime
 import sublime_plugin
 from typing import List
-from .libs.editorconfig import get_properties, EditorConfigError
-from .libs.IndentFinder.indent_finder import IndentFinder
-from .log import msg, show_status_message
-from .settings import get_setting
+from ..libs.editorconfig import get_properties, EditorConfigError
+from ..libs.IndentFinder.indent_finder import IndentFinder
+from ..log import msg, show_status_message
+from ..settings import get_setting
 
 Indentation = collections.namedtuple("Indentation", ["type", "size"])
 INDENTATION_UNKNOWN = Indentation("unknown", -1)
