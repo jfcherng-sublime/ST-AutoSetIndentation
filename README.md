@@ -10,6 +10,11 @@
 This Sublime Text 3 plugin automatically detects and sets the indentation for you, by default, when a file is loaded.
 
 
+## Important Notice
+
+Since ST 4050, the `detect_indentation` command has done quite a great job so you probably no longer needs this plugin.
+
+
 ## Why Do I Make This?
 
 Sublime Text detects the indentation when a file is loaded

@@ -2,6 +2,7 @@ import os
 import sublime
 import sys
 from .functions import is_event_listener_enabled, set_indentation_for_view
+from .log import print_msg
 from .utils import is_view_normal_ready
 
 # stupid python module system
@@ -10,6 +11,12 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "libs"))
 
 def set_up() -> None:
     """ plugin_loaded """
+
+    if int(sublime.version()) >= 4050:
+        print_msg(
+            "Since ST 4050, the 'detect_indentation' command has done quite a great job "
+            "so you probably no longer needs this plugin."
+        )
 
     # A dirty fix for "on_load_async" is not trigger on starting
     # @see https://github.com/SublimeTextIssues/Core/issues/5#issuecomment-476225021
