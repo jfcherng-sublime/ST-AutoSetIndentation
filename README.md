@@ -40,8 +40,8 @@ above files correctly so I make it into this plugin.
   set the plugin setting `hijack_st_detect_indentation` to `false`.
 
 - Even if `hijack_st_detect_indentation` is set to `true` by default, ST will
-  still detect the indentation internally before ASI is ready to work.
-  After that, ASI will detect the indentation **again**
+  still detects the indentation internally before ASI is ready to work.
+  After that, ASI will detects the indentation **again**
   hence ST's result will be overridden but the detection is done **twice**.
   Therefore, you may want to set `detect_indentation` to `false` to skip ST's.
 
