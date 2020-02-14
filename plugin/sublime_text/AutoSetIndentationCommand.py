@@ -1,10 +1,10 @@
 import collections
+import editorconfig
+import IndentFinder.indent_finder as indentfinder
 import re
 import sublime
 import sublime_plugin
 from typing import List
-from ..libs.editorconfig import get_properties, EditorConfigError
-from ..libs.IndentFinder.indent_finder import IndentFinder
 from ..log import msg, show_status_message
 from ..settings import get_setting
 
@@ -151,8 +151,8 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
             return INDENTATION_UNKNOWN
 
         try:
-            options = get_properties(file_path)
-        except EditorConfigError:
+            options = editorconfig.get_properties(file_path)
+        except editorconfig.EditorConfigError:
             return INDENTATION_UNKNOWN
 
         indent_style = options.get("indent_style")
@@ -188,7 +188,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         indentation = INDENTATION_UNKNOWN._asdict()
 
-        indent_finder = IndentFinder(tuple(INDENTATION_UNKNOWN))
+        indent_finder = indentfinder.IndentFinder(tuple(INDENTATION_UNKNOWN))
         indent_finder.parse_string(string)
 
         # possible outputs:
