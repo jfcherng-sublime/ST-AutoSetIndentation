@@ -1,11 +1,11 @@
 # Sublime-AutoSetIndentation
 
-<a href="https://travis-ci.org/jfcherng/Sublime-AutoSetIndentation"><img alt="Travis (.org) branch" src="https://img.shields.io/travis/jfcherng/Sublime-AutoSetIndentation/master?style=flat-square"></a>
-<a href="https://packagecontrol.io/packages/AutoSetIndentation"><img alt="Package Control" src="https://img.shields.io/packagecontrol/dt/AutoSetIndentation?style=flat-square"></a>
-<a href="https://github.com/jfcherng/Sublime-AutoSetIndentation/tags"><img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/tag/jfcherng/Sublime-AutoSetIndentation?style=flat-square&logo=github"></a>
-<a href="https://github.com/jfcherng/Sublime-AutoSetIndentation/blob/master/LICENSE"><img alt="Project license" src="https://img.shields.io/github/license/jfcherng/Sublime-AutoSetIndentation?style=flat-square&logo=github"></a>
-<a href="https://github.com/jfcherng/Sublime-AutoSetIndentation/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/jfcherng/Sublime-AutoSetIndentation?style=flat-square&logo=github"></a>
-<a href="https://www.paypal.me/jfcherng/5usd" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg?style=flat-square&logo=paypal" /></a>
+[![Travis (.org) branch](https://img.shields.io/travis/jfcherng/Sublime-AutoSetIndentation/master?style=flat-square)](https://travis-ci.org/jfcherng/Sublime-AutoSetIndentation)
+[![Package Control](https://img.shields.io/packagecontrol/dt/AutoSetIndentation?style=flat-square)](https://packagecontrol.io/packages/AutoSetIndentation)
+[![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/jfcherng/Sublime-AutoSetIndentation?style=flat-square&logo=github)](https://github.com/jfcherng/Sublime-AutoSetIndentation/tags)
+[![Project license](https://img.shields.io/github/license/jfcherng/Sublime-AutoSetIndentation?style=flat-square&logo=github)](https://github.com/jfcherng/Sublime-AutoSetIndentation/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/jfcherng/Sublime-AutoSetIndentation?style=flat-square&logo=github)](https://github.com/jfcherng/Sublime-AutoSetIndentation/stargazers)
+[![Donate to this project using Paypal](https://img.shields.io/badge/paypal-donate-blue.svg?style=flat-square&logo=paypal)](https://www.paypal.me/jfcherng/5usd)
 
 This Sublime Text 3 plugin automatically detects and sets the indentation for you, by default, when a file is loaded.
 
@@ -53,7 +53,8 @@ above files correctly so I make it into this plugin.
 
 ## Installation
 
-This package is available on Package Control by the name of [AutoSetIndentation](https://packagecontrol.io/packages/AutoSetIndentation).
+This package is available on Package Control by the name of
+[AutoSetIndentation](https://packagecontrol.io/packages/AutoSetIndentation).
 
 
 ## Settings
