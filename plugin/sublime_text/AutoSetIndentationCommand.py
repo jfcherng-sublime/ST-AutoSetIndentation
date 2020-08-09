@@ -39,9 +39,7 @@ def merge_indentation_tuples(base: Indentation, spare: Indentation) -> Indentati
 class AutoSetIndentationCommand(sublime_plugin.TextCommand):
     """ Examines the contents of the buffer to determine the indentation settings. """
 
-    def run(
-        self, edit: sublime.Edit, show_message: bool = True, sample_length: int = 2 ** 16
-    ) -> None:
+    def run(self, edit: sublime.Edit, show_message: bool = True, sample_length: int = 2 ** 16) -> None:
         """
         @brief Run the "auto_set_indentation" command.
 
@@ -74,9 +72,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
             self.use_indentation_space(self.view, indent.size, show_message)
             return
 
-    def special_indentation_cases(
-        self, view: sublime.View, indent: Indentation, show_message: bool = True
-    ) -> bool:
+    def special_indentation_cases(self, view: sublime.View, indent: Indentation, show_message: bool = True) -> bool:
         """
         @brief Handle some special indentation cases.
 
@@ -99,9 +95,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
 
         return False
 
-    def get_indentation_for_view(
-        self, view: sublime.View, sample_length: int = 2 ** 16
-    ) -> Indentation:
+    def get_indentation_for_view(self, view: sublime.View, sample_length: int = 2 ** 16) -> Indentation:
         """
         @brief Guess the indentation for the view.
                This would first try using configs from the .editorconfig file
@@ -126,7 +120,7 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         ):
             return indentation_editorconfig
 
-        sample = view.substr(sublime.Region(0, min(view.size(), sample_length)))
+        sample = view.substr(sublime.Region(0, min(len(view), sample_length)))
         indentation_guessed = self.guess_indentation_from_string(sample)
 
         add_ASI_result_sources_for_view(view, ["guessing"])
@@ -237,13 +231,9 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         if indent_type.startswith("space"):
             self.use_indentation_space(view, indent_size, False)
 
-        show_status_message(
-            msg("Indentation: {}/{} (default)".format(indent_type, indent_size)), show_message
-        )
+        show_status_message(msg("Indentation: {}/{} (default)".format(indent_type, indent_size)), show_message)
 
-    def use_indentation_tab(
-        self, view: sublime.View, indent_tab: int = 4, show_message: bool = True
-    ) -> None:
+    def use_indentation_tab(self, view: sublime.View, indent_tab: int = 4, show_message: bool = True) -> None:
         """
         @brief Sets the indentation to tab.
 
@@ -257,17 +247,11 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         self.view.settings().set("tab_size", indent_tab)
 
         show_status_message(
-            msg(
-                "Indentation: tab/{} (by {})".format(
-                    indent_tab, ", ".join(get_ASI_result_sources_for_view(view))
-                )
-            ),
+            msg("Indentation: tab/{} (by {})".format(indent_tab, ", ".join(get_ASI_result_sources_for_view(view)))),
             show_message,
         )
 
-    def use_indentation_space(
-        self, view: sublime.View, indent_space: int = 4, show_message: bool = True
-    ) -> None:
+    def use_indentation_space(self, view: sublime.View, indent_space: int = 4, show_message: bool = True) -> None:
         """
         @brief Sets the indentation to space.
 
@@ -281,10 +265,6 @@ class AutoSetIndentationCommand(sublime_plugin.TextCommand):
         self.view.settings().set("tab_size", indent_space)
 
         show_status_message(
-            msg(
-                "Indentation: space/{} (by {})".format(
-                    indent_space, ", ".join(get_ASI_result_sources_for_view(view))
-                )
-            ),
+            msg("Indentation: space/{} (by {})".format(indent_space, ", ".join(get_ASI_result_sources_for_view(view)))),
             show_message,
         )

@@ -22,9 +22,7 @@ class AutoSetIndentationEventListener(sublime_plugin.EventListener):
         if is_view_only_invisible_chars(view):
             view.settings().set("ASI_is_indentation_detected", False)
 
-    def on_text_command(
-        self, view: sublime.View, command_name: str, args: dict
-    ) -> Optional[Tuple[str, Dict]]:
+    def on_text_command(self, view: sublime.View, command_name: str, args: dict) -> Optional[Tuple[str, Dict]]:
         """
         @brief Replace Sublime Text's "detect_indentation" command with this plugin's.
 

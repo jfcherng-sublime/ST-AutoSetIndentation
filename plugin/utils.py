@@ -85,10 +85,12 @@ def view_find_all_fast(view: sublime.View, regex_obj: Pattern) -> List[sublime.R
     @return Found regions
     """
 
+    # fmt: off
     return [
         sublime.Region(*m.span())
-        for m in regex_obj.finditer(view.substr(sublime.Region(0, view.size())))
+        for m in regex_obj.finditer(view.substr(sublime.Region(0, len(view))))
     ]
+    # fmt: on
 
 
 def region_shift(region: RegionLike, shift: int) -> RegionLike:
@@ -225,9 +227,7 @@ def simplify_intersected_regions(
     return merged_regions
 
 
-def is_regions_intersected(
-    region_1: sublime.Region, region_2: sublime.Region, allow_boundary: bool = False
-) -> bool:
+def is_regions_intersected(region_1: sublime.Region, region_2: sublime.Region, allow_boundary: bool = False) -> bool:
     """
     @brief Check whether two regions are intersected.
 
