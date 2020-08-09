@@ -57,6 +57,6 @@ def set_indentation_for_view(view: sublime.View, args: Dict[str, Any] = {}) -> N
     if is_view_set_by_editorconfig_plugin(view):
         show_status_message(msg("EditorConfig detected indentation"), _args["show_message"])
     else:
-        view.run_command("auto_set_indentation", _args)
+        view.run_command("auto_set_indentation", _args)  # type: ignore
 
     view.settings().set("ASI_is_indentation_detected", True)
