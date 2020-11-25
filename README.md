@@ -11,7 +11,9 @@ This Sublime Text 3 plugin automatically detects and sets the indentation for yo
 
 ## Important Notice
 
-Since ST 4050, the `detect_indentation` command has done quite a great job so you probably no longer needs this plugin.
+As of Sublime Text 4, the dev team has been use test cases from this plugin
+to improve the built-in indentation detection and it works quite well.
+So, you probably no longer needs this plugin in Sublime Text 4.
 
 ## Why Do I Make This
 

@@ -14,8 +14,9 @@ def set_up() -> None:
 
     if int(sublime.version()) >= 4050:
         print_msg(
-            "Since ST 4050, the 'detect_indentation' command has done quite a great job "
-            "so you probably no longer needs this plugin."
+            "As of Sublime Text 4, the dev team has been use test cases from this plugin "
+            "to improve the built-in indentation detection and it works quite well. "
+            "So, you probably no longer needs this plugin in Sublime Text 4."
         )
 
     # A dirty fix for "on_load_async" is not trigger on starting
