@@ -1,4 +1,4 @@
-# [Deprecated] ST-AutoSetIndentation
+# ❌ [Deprecated] ST-AutoSetIndentation
 
 [![Travis (.org) branch](https://img.shields.io/travis/jfcherng-sublime/ST-AutoSetIndentation/master?style=flat-square)](https://travis-ci.org/jfcherng-sublime/ST-AutoSetIndentation)
 [![Package Control](https://img.shields.io/packagecontrol/dt/AutoSetIndentation?style=flat-square)](https://packagecontrol.io/packages/AutoSetIndentation)
